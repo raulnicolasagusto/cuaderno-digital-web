@@ -1,103 +1,146 @@
+"use client"; // Directiva para convertirlo en un Componente de Cliente
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
-export default function Home() {
+// Tipado para un cuaderno
+interface Notebook {
+  id: number;
+  title: string;
+  description: string;
+  imageUrl: string;
+  altText: string;
+}
+
+// Datos iniciales para los cuadernos
+const initialNotebooks: Notebook[] = [
+  {
+    id: 1,
+    title: "Ideas Iniciales",
+    description: "Primeras notas y bocetos para proyectos.",
+    imageUrl: "https://images.unsplash.com/photo-1544135599-232a29d3c333?q=80&w=2000&auto=format&fit=crop",
+    altText: "Persona de pie en una pasarela de arquitectura moderna.",
+  },
+  {
+    id: 2,
+    title: "Recetas de Cocina",
+    description: "Mis recetas favoritas y por probar.",
+    imageUrl: "https://images.unsplash.com/photo-1551776235-dde6d4214209?q=80&w=2070&auto=format&fit=crop",
+    altText: "Vista aérea de acantilados verdes junto al mar.",
+  },
+];
+
+
+export default function HomePage() {
+  // Manejamos los cuadernos con estado para poder agregar más en el futuro
+  const [notebooks, setNotebooks] = useState<Notebook[]>(initialNotebooks);
+  
+  // En el futuro, aquí irá la lógica para manejar la creación de un nuevo cuaderno
+  const handleCreateNotebook = () => {
+    console.log("Creando nuevo cuaderno...");
+    // Aquí agregarías el nuevo cuaderno al estado `notebooks`
+  };
+
   return (
-    <div suppressHydrationWarning={true} className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="flex-1 p-6 md:p-8 space-y-8">
+      <header className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold tracking-tight">
+          Mis Cuadernos
+        </h1>
+        
+        {/* El Dialog de Shadcn envuelve el botón y el contenido del modal */}
+        <Dialog>
+          {/* Este es el botón que abre el modal */}
+          <DialogTrigger asChild>
+            <Button className="bg-foreground text-background hover:bg-foreground/90">
+              Crear Cuaderno
+            </Button>
+          </DialogTrigger>
+          
+          {/* Este es el contenido del modal que se mostrará */}
+          <DialogContent className="sm:max-w-[425px] bg-background">
+            <DialogHeader>
+              <DialogTitle className="text-2xl">Crear Nuevo Cuaderno</DialogTitle>
+              <DialogDescription>
+                Rellena los detalles para crear tu nuevo cuaderno.
+              </DialogDescription>
+            </DialogHeader>
+            
+            {/* Formulario dentro del modal */}
+            <div className="grid gap-6 py-4">
+              <div className="grid w-full max-w-sm items-center gap-1.5">
+                <Label htmlFor="notebook-name">Nombre del Cuaderno *</Label>
+                <Input type="text" id="notebook-name" placeholder="Ej: Mis Ideas Brillantes" />
+              </div>
+              <div className="grid w-full gap-1.5">
+                <Label htmlFor="description">Descripción Breve</Label>
+                <Textarea placeholder="Ej: Un lugar para todas mis notas sobre..." id="description" />
+              </div>
+              <div className="grid w-full max-w-sm items-center gap-1.5">
+                <Label htmlFor="cover">Seleccionar Portada</Label>
+                <Input id="cover" type="file" className="file:text-foreground"/>
+              </div>
+            </div>
+            
+            <DialogFooter>
+              {/* El botón DialogClose cierra el modal automáticamente */}
+              <DialogClose asChild>
+                <Button type="button" variant="secondary">
+                  Cancelar
+                </Button>
+              </DialogClose>
+              {/* Botón principal para crear el cuaderno */}
+              <Button type="submit" onClick={handleCreateNotebook}>
+                Crear Cuaderno
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </header>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      <main>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {notebooks.map((notebook) => (
+            <a
+              key={notebook.id}
+              href={`/notebook/${notebook.id}`}
+              className="group block rounded-lg overflow-hidden bg-card shadow-lg border transition-all duration-300 hover:shadow-primary/20 hover:border-primary/50"
+            >
+              <div className="overflow-hidden">
+                <Image
+                  src={notebook.imageUrl}
+                  alt={notebook.altText}
+                  width={600}
+                  height={400}
+                  className="w-full h-48 object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
+                />
+              </div>
+              <div className="p-4">
+                <h2 className="text-xl font-semibold text-card-foreground mb-1">
+                  {notebook.title}
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  {notebook.description}
+                </p>
+              </div>
+            </a>
+          ))}
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
 }
