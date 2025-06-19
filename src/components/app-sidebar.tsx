@@ -29,8 +29,8 @@ import {
 // This is sample data.
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
+    name: "Raul",
+    email: "raul@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
   teams: [
@@ -52,25 +52,11 @@ const data = {
   ],
   navMain: [
     {
-      title: "Playground",
+      title: "Mis Cuadernos",
       url: "#",
       icon: SquareTerminal,
       isActive: true,
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
-    },
+     },
     {
       title: "Models",
       url: "#",
